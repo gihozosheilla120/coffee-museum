@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react';
 type HeroSlideshowProps = {
   images: string[];
   intervalMs?: number;
+  overlay?: boolean;
 };
 
-export default function HeroSlideshow({ images, intervalMs = 4500 }: HeroSlideshowProps) {
+export default function HeroSlideshow({ images, intervalMs = 4500, overlay = true }: HeroSlideshowProps) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
