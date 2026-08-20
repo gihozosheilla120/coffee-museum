@@ -1,18 +1,17 @@
 import Section from '../components/Section';
-import ImagePlaceholder from '../components/ImagePlaceholder';
 import { galleries } from '../data/galleries';
 
 export default function Explore() {
   return (
     <Section
       eyebrow="Explore the Museum"
-      title="Five Galleries, One Coffee Story"
-      intro="Each gallery builds on the last — start with history, move through the science and craft of coffee, and finish where every bean ends up: the global market."
+      title="Four Spaces, One Coffee Story"
+      intro="From baking and pottery to dairy and the arts, each space reflects a different side of Rwandan coffee culture."
     >
       <div className="grid grid--2">
         {galleries.map((gallery, idx) => (
           <div key={gallery.id}>
-            <ImagePlaceholder label="gallery photograph to be supplied" height={220} />
+            <img src={gallery.image} alt={gallery.name} style={{ width: '100%', height: 220, objectFit: 'cover' }} />
             <div style={{ paddingTop: '1rem' }}>
               <span style={{ color: 'var(--color-green)', fontWeight: 800, fontSize: '0.85rem' }}>
                 {String(idx + 1).padStart(2, '0')}

@@ -42,15 +42,9 @@ export default function Journey() {
 
               <div style={{ borderTop: '1px solid var(--color-platinum)', margin: '1.5rem 0' }} />
 
-              <div className="grid grid--2" style={{ gap: '1.5rem', marginBottom: '2rem' }}>
-                <div>
-                  <div className="stat-label">In the Museum</div>
-                  <div style={{ marginTop: '0.3rem', fontWeight: 600 }}>{stage.gallery}</div>
-                </div>
-                <div>
-                  <div className="stat-label">Sitemap Section</div>
-                  <div style={{ marginTop: '0.3rem', fontWeight: 600 }}>Coffee Journey</div>
-                </div>
+              <div style={{ marginBottom: '2rem' }}>
+                <div className="stat-label">Sitemap Section</div>
+                <div style={{ marginTop: '0.3rem', fontWeight: 600 }}>Coffee Journey</div>
               </div>
 
               <div className="flex gap-2">

@@ -1,4 +1,7 @@
-import { siteImages } from './siteImages';
+import breadImage from '../assets/bread.jpg';
+import potteryImage from '../assets/pottery.jpg';
+import milkImage from '../assets/milk.jpg';
+import creativeImage from '../assets/creative.jpg';
 
 export type Gallery = {
   id: string;
@@ -10,38 +13,31 @@ export type Gallery = {
 
 export const galleries: Gallery[] = [
   {
-    id: 'historical',
-    name: 'Historical Gallery',
-    tagline: "From colonial-era planting to a national industry",
-    description: "Trace coffee's arrival in Rwanda in the early 1900s through to today's 400,000 smallholder families, told through archival photography, artifacts, and first-person farmer accounts.",
-    image: siteImages.interiorGallery,
+    id: 'bakery',
+    name: 'Museum Bakery',
+    tagline: 'Fresh baked pairings for your cup',
+    description: 'Sample coffee-paired baked goods made on site, where the museum\'s café culture comes to life.',
+    image: breadImage,
   },
   {
-    id: 'agronomy',
-    name: 'Agronomy Zone',
-    tagline: 'The science behind every cherry',
-    description: 'Explore soil, altitude, and the Bourbon Arabica varieties that make Rwandan coffee distinctive, with living plant specimens and interactive terrain models.',
-    image: siteImages.landscapeHills,
+    id: 'pottery',
+    name: 'Museum Pottery',
+    tagline: 'Handcrafted ceramics, made on site',
+    description: 'Watch artisans shape the cups, mugs and serving pieces used throughout the museum, blending craft with coffee culture.',
+    image: potteryImage,
   },
   {
-    id: 'processing',
-    name: 'Farming & Processing Experience',
-    tagline: 'Hands-on, from cherry to parchment',
-    description: 'Walk a scale-model washing station, handle real cherries at each processing stage, and see raised drying beds up close.',
-    image: siteImages.drying,
+    id: 'milk',
+    name: 'Museum Milk',
+    tagline: "Rwanda's dairy tradition, alongside coffee",
+    description: "Explore Rwanda's milk and dairy heritage, presented alongside the country's coffee story.",
+    image: milkImage,
   },
   {
-    id: 'cupping-lab',
-    name: 'Quality & Cupping Lab',
-    tagline: 'Taste like a professional buyer',
-    description: 'A working cupping lab where visitors learn grading standards and join guided tastings led by certified Q-graders.',
-    image: siteImages.cupping,
-  },
-  {
-    id: 'global-market',
-    name: 'Global Market Room',
-    tagline: "Rwanda's coffee on the world stage",
-    description: "See where Rwandan beans travel after export, understand pricing and trade, and meet the cooperatives behind the country's specialty lots.",
-    image: siteImages.marketplaceBags,
+    id: 'creative',
+    name: 'Museum Creative',
+    tagline: 'Rwandan art and creative expression',
+    description: 'A dedicated space for Rwandan visual art and creative workshops, rotating with local artists.',
+    image: creativeImage,
   },
 ];

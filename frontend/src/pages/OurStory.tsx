@@ -1,4 +1,4 @@
-import ImagePlaceholder from '../components/ImagePlaceholder';
+import homeImage from '../assets/home.jpg';
 
 const OBJECTIVES = [
   'Preserve and celebrate coffee history and cultural identity.',
@@ -25,7 +25,7 @@ export default function OurStory() {
       </section>
 
       <div className="container">
-        <ImagePlaceholder label="photograph to be supplied" height={420} />
+        <img src={homeImage} alt="Coffee Museum i Nyanza entrance" style={{ width: '100%', height: 420, objectFit: 'cover' }} />
       </div>
 
       <section className="section">

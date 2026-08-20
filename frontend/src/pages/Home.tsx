@@ -50,14 +50,14 @@ export default function Home() {
           <div className="flex justify-between items-center section-head" style={{ marginBottom: '2rem' }}>
             <div>
               <span className="eyebrow">Inside the Museum</span>
-              <h2 style={{ margin: 0 }}>Five galleries, one continuous story</h2>
+              <h2 style={{ margin: 0 }}>Four spaces, one continuous story</h2>
             </div>
             <Link to="/explore" className="section-link">Explore all galleries &rarr;</Link>
           </div>
           <div className="grid grid--4">
             {galleries.map((gallery, idx) => (
               <div key={gallery.id}>
-                <ImagePlaceholder label="gallery photograph to be supplied" height={180} />
+                <img src={gallery.image} alt={gallery.name} style={{ width: '100%', height: 180, objectFit: 'cover' }} />
                 <div style={{ paddingTop: '1rem' }}>
                   <span style={{ color: 'var(--color-green)', fontWeight: 800, fontSize: '0.85rem' }}>
                     {String(idx + 1).padStart(2, '0')}

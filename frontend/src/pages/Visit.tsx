@@ -4,6 +4,7 @@ import Section from '../components/Section';
 import ImagePlaceholder from '../components/ImagePlaceholder';
 import { attractions } from '../data/attractions';
 import { visitFaqs } from '../data/faqs';
+import samplesImage from '../assets/samples.jpg';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
 
@@ -106,7 +107,7 @@ export default function Visit() {
       <div id="tasting" />
       <Section eyebrow="Tasting" title="Coffee Tasting Experience" intro="Join a guided cupping session in our on-site lab, led by certified Q-graders, and taste your way through multiple Rwandan micro-lots.">
         <div className="grid grid--2" style={{ alignItems: 'center' }}>
-          <ImagePlaceholder label="cupping lab photograph to be supplied" height={280} />
+          <img src={samplesImage} alt="Aroma cupping and tasting kit" style={{ width: '100%', height: 280, objectFit: 'cover' }} />
           <ul style={{ paddingLeft: '1.2rem', lineHeight: 1.9 }} className="muted">
             <li>Guided cupping of 3&ndash;5 origins</li>
             <li>Learn professional grading vocabulary</li>
