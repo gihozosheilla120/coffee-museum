@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 const NAV_LINKS = [
   { to: '/', label: 'Home' },
@@ -16,6 +17,14 @@ const NAV_LINKS = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   const { itemCount } = useCart();
+  const { isAuthenticated, user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    signOut();
+    setOpen(false);
+    navigate('/');
+  };
 
   return (
     <header
@@ -50,16 +59,22 @@ export default function Header() {
         </nav>
 
         <div className="desktop-nav" style={{ display: 'none', alignItems: 'center', gap: '0.75rem' }}>
-          <div className="lang-switch">
-            <span className="lang-switch__pill lang-switch__pill--active">EN</span>
-            <span className="lang-switch__pill">FR</span>
-            <span className="lang-switch__pill">RW</span>
-          </div>
-          <button className="btn btn--outline btn--sm" type="button">Sign In</button>
-          <Link to="/cart" className="cart-pill">
-            Cart
-            <span className="cart-pill__badge">{itemCount}</span>
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <span className="muted" style={{ fontSize: '0.88rem', fontWeight: 600 }}>
+                Hi, {user?.name}
+              </span>
+              <Link to="/cart" className="cart-pill">
+                Cart
+                <span className="cart-pill__badge">{itemCount}</span>
+              </Link>
+              <button className="btn btn--outline btn--sm" type="button" onClick={handleSignOut}>
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <Link to="/sign-in" className="btn btn--outline btn--sm">Sign In</Link>
+          )}
         </div>
 
         <button
@@ -95,9 +110,20 @@ export default function Header() {
                 {link.label}
               </NavLink>
             ))}
-            <Link to="/cart" className="btn btn--sm" style={{ alignSelf: 'flex-start', marginTop: '0.5rem' }} onClick={() => setOpen(false)}>
-              Cart{itemCount > 0 ? ` (${itemCount})` : ''}
-            </Link>
+            {isAuthenticated ? (
+              <>
+                <Link to="/cart" className="btn btn--sm" style={{ alignSelf: 'flex-start', marginTop: '0.5rem' }} onClick={() => setOpen(false)}>
+                  Cart{itemCount > 0 ? ` (${itemCount})` : ''}
+                </Link>
+                <button className="btn btn--outline btn--sm" type="button" style={{ alignSelf: 'flex-start' }} onClick={handleSignOut}>
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <Link to="/sign-in" className="btn btn--sm" style={{ alignSelf: 'flex-start', marginTop: '0.5rem' }} onClick={() => setOpen(false)}>
+                Sign In
+              </Link>
+            )}
           </div>
         </div>
       )}

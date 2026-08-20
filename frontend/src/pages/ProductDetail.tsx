@@ -1,13 +1,16 @@
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { products } from '../data/products';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import ImagePlaceholder from '../components/ImagePlaceholder';
 
 export default function ProductDetail() {
   const { id } = useParams();
   const product = products.find(p => p.id === id);
   const { addItem } = useCart();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
 
@@ -49,11 +52,15 @@ export default function ProductDetail() {
               <button
                 className="btn"
                 onClick={() => {
+                  if (!isAuthenticated) {
+                    navigate('/sign-in', { state: { from: `/marketplace/${product.id}` } });
+                    return;
+                  }
                   addItem(product, qty);
                   setAdded(true);
                 }}
               >
-                Add to Cart
+                {isAuthenticated ? 'Add to Cart' : 'Sign In to Buy'}
               </button>
             </div>
             {added && (

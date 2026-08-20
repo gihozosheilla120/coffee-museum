@@ -5,7 +5,7 @@ type HeroSlideshowProps = {
   intervalMs?: number;
 };
 
-export default function HeroSlideshow({ images, intervalMs = 5500 }: HeroSlideshowProps) {
+export default function HeroSlideshow({ images, intervalMs = 4500 }: HeroSlideshowProps) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
 import Section from '../components/Section';
-import ImagePlaceholder from '../components/ImagePlaceholder';
 import { attractions } from '../data/attractions';
 import { visitFaqs } from '../data/faqs';
 import samplesImage from '../assets/samples.jpg';
@@ -150,7 +149,7 @@ export default function Visit() {
         <div className="grid grid--2">
           {attractions.map(a => (
             <div key={a.name}>
-              <ImagePlaceholder label="attraction photograph to be supplied" height={200} />
+              <img src={a.image} alt={a.name} style={{ width: '100%', height: 200, objectFit: 'cover' }} />
               <div style={{ paddingTop: '1rem' }}>
                 <span className="tag">{a.distance}</span>
                 <h3 style={{ margin: '0.4rem 0 0.5rem' }}>{a.name}</h3>

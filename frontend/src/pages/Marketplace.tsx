@@ -1,11 +1,22 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Section from '../components/Section';
 import ImagePlaceholder from '../components/ImagePlaceholder';
-import { products } from '../data/products';
+import { products, Product } from '../data/products';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 export default function Marketplace() {
   const { addItem } = useCart();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAddToCart = (product: Product) => {
+    if (!isAuthenticated) {
+      navigate('/sign-in', { state: { from: '/marketplace' } });
+      return;
+    }
+    addItem(product);
+  };
 
   return (
     <Section
@@ -28,7 +39,9 @@ export default function Marketplace() {
                 <span style={{ fontWeight: 800, color: 'var(--color-terracotta)' }}>
                   {product.priceRWF.toLocaleString()} RWF
                 </span>
-                <button className="btn btn--sm" onClick={() => addItem(product)}>Add to Cart</button>
+                <button className="btn btn--sm" onClick={() => handleAddToCart(product)}>
+                  {isAuthenticated ? 'Add to Cart' : 'Sign In to Buy'}
+                </button>
               </div>
             </div>
           </div>
