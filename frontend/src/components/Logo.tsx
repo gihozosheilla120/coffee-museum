@@ -4,13 +4,26 @@ type LogoProps = {
   size?: number;
 };
 
-// Rounded leaf/drop mark: solid green body with a coral diagonal accent band,
-// matching the real museum signage (leaf outline with a bean-crease accent).
+// Matches the brand manual's symbol: a leaf (with an inner vein) on the left,
+// and three nested chevron strokes fanning out to the right — crimson at the
+// outer tip, fading to terracotta near the leaf.
 const LEAF_PATH =
-  'M60 3C36 1 18 21 20 46C22 70 40 89 61 94C56 84 57 72 66 63C58 59 55 50 59 41C68 45 75 37 74 26C73 15 69 5 60 3Z';
+  'M50 6C28 6 12 24 12 48C12 70 26 88 46 94C44 82 46 70 54 62C46 58 44 50 47 43C54 47 60 41 59 32C58 20 55 9 50 6Z';
+const VEIN_PATH = 'M32 86C40 70 40 50 46 16';
+const CHEVRONS: Array<{ points: string; toneStop: 0 | 1 }> = [
+  { points: '56,8 104,30 56,52', toneStop: 0 },
+  { points: '52,32 92,50 52,68', toneStop: 1 },
+  { points: '48,54 80,68 48,82', toneStop: 1 },
+];
+const VIEW_W = 110;
+const VIEW_H = 100;
 
 export default function Logo({ variant = 'color', showWordmark = true, size = 36 }: LogoProps) {
   const wordmarkColor = variant === 'light' ? '#FFFFFF' : 'var(--color-obsidian)';
+  const isLight = variant === 'light';
+  const monoColor = isLight ? '#FFFFFF' : 'var(--color-obsidian)';
+  const veinColor = isLight ? 'var(--color-obsidian)' : 'var(--color-alabaster)';
+  const chevronColors = ['var(--color-crimson)', 'var(--color-terracotta)'];
 
   return (
     <span
@@ -22,20 +35,27 @@ export default function Logo({ variant = 'color', showWordmark = true, size = 36
         lineHeight: 1,
       }}
     >
-      <svg width={size} height={size} viewBox="0 0 94 98" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <clipPath id="leaf-clip">
-          <path d={LEAF_PATH} />
-        </clipPath>
-        <g clipPath="url(#leaf-clip)">
-          {variant === 'light' ? (
-            <rect x="0" y="0" width="94" height="98" fill="#FFFFFF" />
-          ) : (
-            <>
-              <rect x="0" y="0" width="94" height="98" fill="var(--color-green)" />
-              <polygon points="94,0 44,98 68,98 94,30" fill="var(--color-crimson)" />
-            </>
-          )}
-        </g>
+      <svg
+        width={Math.round((size * VIEW_W) / VIEW_H)}
+        height={size}
+        viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <path d={LEAF_PATH} fill={isLight ? '#FFFFFF' : 'var(--color-green)'} />
+        <path d={VEIN_PATH} stroke={veinColor} strokeWidth="2.5" strokeLinecap="round" fill="none" />
+        {CHEVRONS.map((chevron, idx) => (
+          <polyline
+            key={idx}
+            points={chevron.points}
+            fill="none"
+            stroke={isLight ? monoColor : chevronColors[chevron.toneStop]}
+            strokeWidth={10 - idx}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        ))}
       </svg>
       {showWordmark && (
         <span style={{ display: 'flex', flexDirection: 'column', fontWeight: 800, fontSize: '1.05rem', color: wordmarkColor }}>

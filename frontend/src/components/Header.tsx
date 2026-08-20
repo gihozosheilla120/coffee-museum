@@ -18,7 +18,16 @@ export default function Header() {
   const { itemCount } = useCart();
 
   return (
-    <header style={{ backgroundColor: 'var(--color-alabaster)', borderBottom: '1px solid var(--color-platinum)', position: 'sticky', top: 0, zIndex: 50 }}>
+    <header
+      style={{
+        backgroundColor: 'var(--color-alabaster)',
+        borderBottom: '1px solid var(--color-platinum)',
+        boxShadow: '0 2px 12px rgba(17, 25, 34, 0.04)',
+        position: 'sticky',
+        top: 0,
+        zIndex: 50,
+      }}
+    >
       <div
         className="container"
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 1.5rem' }}

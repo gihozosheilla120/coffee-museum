@@ -24,6 +24,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 87.5%;
 }
 
 body {
@@ -31,8 +32,22 @@ body {
   font-family: var(--font-sans);
   background-color: var(--color-alabaster);
   color: var(--color-obsidian);
-  line-height: 1.6;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[id] {
+  scroll-margin-top: 90px;
+}
+
+a, button {
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
 }
 
 img {
@@ -251,6 +266,11 @@ p { margin: 0 0 1em; }
   background-color: var(--color-alabaster);
   background-image: linear-gradient(135deg, rgba(0,39,61,0.06) 25%, transparent 25%, transparent 50%, rgba(0,39,61,0.06) 50%, rgba(0,39,61,0.06) 75%, transparent 75%, transparent);
   background-size: 24px 24px;
+  transition: opacity 0.2s ease;
+}
+
+a:hover .chevron-pattern--light {
+  opacity: 0.82;
 }
 
 .divider-strip {
@@ -282,6 +302,11 @@ p { margin: 0 0 1em; }
   padding-bottom: 0.35rem;
   border-bottom: 2px solid transparent;
   white-space: nowrap;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.nav-link:hover {
+  color: var(--color-navy);
 }
 
 .nav-link.active {
@@ -325,6 +350,12 @@ p { margin: 0 0 1em; }
   text-transform: uppercase;
   padding: 0.55rem 1rem;
   border-radius: 999px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.cart-pill:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .cart-pill__badge {
@@ -413,6 +444,15 @@ p { margin: 0 0 1em; }
   text-align: left;
   font-family: var(--font-sans);
   white-space: nowrap;
+  transition: border-color 0.15s ease;
+}
+
+.stage-tab:hover:not(.stage-tab--active) {
+  border-bottom-color: var(--color-platinum);
+}
+
+.stage-tab:hover .stage-tab__title {
+  color: var(--color-navy);
 }
 
 .stage-tab__num {

@@ -32,7 +32,7 @@ const columns = [
 
 export default function Footer() {
   return (
-    <footer style={{ backgroundColor: 'var(--color-navy)', color: 'var(--color-platinum)', marginTop: 'auto' }}>
+    <footer style={{ backgroundColor: 'var(--color-obsidian)', color: 'var(--color-platinum)', marginTop: 'auto' }}>
       <div className="container" style={{ padding: '3.5rem 1.5rem 2.5rem' }}>
         <div className="grid grid--4" style={{ gap: '2.5rem' }}>
           <div>

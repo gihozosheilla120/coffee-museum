@@ -56,24 +56,24 @@ export default function OurStory() {
         </div>
       </section>
 
-      <section className="section section--dark">
+      <section className="section section--dark" style={{ paddingBottom: '7rem' }}>
         <div className="container">
-          <h2>What the museum sets out to do</h2>
-          <div className="grid grid--2" style={{ marginTop: '2rem', rowGap: 0, columnGap: '3rem' }}>
+          <h2 style={{ fontSize: '1.4rem' }}>What the museum sets out to do</h2>
+          <div className="grid grid--2" style={{ marginTop: '1.5rem', rowGap: 0, columnGap: '3rem' }}>
             {OBJECTIVES.map((text, idx) => (
               <div
                 key={text}
                 style={{
-                  padding: '1.5rem 0',
+                  padding: '1.1rem 0',
                   borderTop: idx < 2 ? 'none' : '1px solid rgba(209,217,224,0.2)',
                   borderLeft: idx % 2 === 1 ? '1px solid rgba(209,217,224,0.2)' : 'none',
                   paddingLeft: idx % 2 === 1 ? '2rem' : 0,
                 }}
               >
-                <span style={{ color: 'var(--color-green)', fontWeight: 800, fontSize: '0.78rem' }}>
+                <span style={{ color: 'var(--color-green)', fontWeight: 800, fontSize: '0.72rem' }}>
                   {String(idx + 1).padStart(2, '0')}
                 </span>
-                <p style={{ margin: '0.5rem 0 0', color: 'white' }}>{text}</p>
+                <p style={{ margin: '0.4rem 0 0', color: 'white', fontSize: '0.85rem' }}>{text}</p>
               </div>
             ))}
           </div>
