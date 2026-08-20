@@ -3,27 +3,44 @@ import { galleries } from '../data/galleries';
 import { products } from '../data/products';
 import { journeyStages } from '../data/journeyStages';
 import ImagePlaceholder from '../components/ImagePlaceholder';
+import HeroSlideshow from '../components/HeroSlideshow';
+import heroImage from '../assets/hero.jpg';
+import restImage from '../assets/rest.jpg';
+import seatsImage from '../assets/seats.jpg';
+import homeImage from '../assets/home.jpg';
+import samplesImage from '../assets/samples.jpg';
+import coffeemachineImage from '../assets/coffeemachine.jpg';
+
+const HERO_IMAGES = [heroImage, restImage, seatsImage, homeImage, samplesImage, coffeemachineImage];
 
 export default function Home() {
   return (
     <div>
-      <section className="section--tight">
-        <div className="container">
-          <div className="grid grid--2" style={{ alignItems: 'center', gap: '3rem' }}>
-            <div>
-              <span className="eyebrow">The Coffee Museum &middot; Nyanza, Rwanda</span>
-              <h1>Rwanda's coffee heritage, preserved and shared</h1>
-              <p className="section-intro">
-                A centre for preserving Rwanda's coffee history, educating visitors about the coffee value chain,
-                promoting tourism, supporting the coffee industry, and showcasing the country's achievements in
-                coffee production and innovation.
-              </p>
-              <div className="flex gap-2" style={{ marginTop: '1.75rem', flexWrap: 'wrap' }}>
-                <Link to="/visit" className="btn">Plan Your Visit</Link>
-                <Link to="/coffee-journey" className="btn btn--outline">The Coffee Journey</Link>
-              </div>
-            </div>
-            <ImagePlaceholder label="hero photograph to be supplied" height={420} watermark />
+      <section style={{ position: 'relative', overflow: 'hidden', minHeight: 560 }}>
+        <HeroSlideshow images={HERO_IMAGES} />
+        <div className="container" style={{ position: 'relative', padding: '6rem 1.5rem' }}>
+          <span className="eyebrow" style={{ color: 'var(--color-green)' }}>The Coffee Museum &middot; Nyanza, Rwanda</span>
+          <h1 style={{ color: 'white', maxWidth: '20ch' }}>Rwanda's coffee heritage, preserved and shared</h1>
+          <p className="section-intro" style={{ color: 'var(--color-platinum)' }}>
+            A centre for preserving Rwanda's coffee history, educating visitors about the coffee value chain,
+            promoting tourism, supporting the coffee industry, and showcasing the country's achievements in
+            coffee production and innovation.
+          </p>
+          <div className="flex gap-2" style={{ marginTop: '1.75rem', flexWrap: 'wrap' }}>
+            <Link
+              to="/visit"
+              className="btn"
+              style={{ backgroundColor: 'var(--color-terracotta)', borderColor: 'var(--color-terracotta)' }}
+            >
+              Plan Your Visit
+            </Link>
+            <Link
+              to="/coffee-journey"
+              className="btn btn--outline"
+              style={{ backgroundColor: 'transparent', borderColor: 'var(--color-terracotta)', color: 'white' }}
+            >
+              The Coffee Journey
+            </Link>
           </div>
         </div>
       </section>

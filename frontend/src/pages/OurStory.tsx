@@ -56,7 +56,7 @@ export default function OurStory() {
         </div>
       </section>
 
-      <section className="section section--dark" style={{ paddingBottom: '7rem' }}>
+      <section className="section section--dark">
         <div className="container">
           <h2 style={{ fontSize: '1.4rem' }}>What the museum sets out to do</h2>
           <div className="grid grid--2" style={{ marginTop: '1.5rem', rowGap: 0, columnGap: '3rem' }}>

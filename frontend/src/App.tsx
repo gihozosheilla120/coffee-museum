@@ -37,6 +37,7 @@ function App() {
               <Route path="/contact" element={<Contact />} />
             </Routes>
           </main>
+          <div style={{ height: '3rem', backgroundColor: 'var(--color-alabaster)' }} />
           <Footer />
         </div>
       </Router>
