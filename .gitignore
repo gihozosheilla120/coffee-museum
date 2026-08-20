@@ -21,6 +21,7 @@ dist/
 build/
 
 # IDEs and editors
+.claude
 .idea/
 .vscode/
 *.suo
