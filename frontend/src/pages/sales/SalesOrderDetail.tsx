@@ -42,9 +42,13 @@ export default function SalesOrderDetail() {
 
   return (
     <div className="section container" style={{ maxWidth: 720 }}>
-      <Link to="/sales" className="muted" style={{ fontSize: '0.85rem' }}>&larr; Back to Sales Portal</Link>
-      <span className="eyebrow" style={{ marginTop: '1rem' }}>Order</span>
-      <h1 style={{ fontSize: '1.6rem' }}>{order.id}</h1>
+      <Link to="/sales" className="muted" style={{ fontSize: '0.85rem', display: 'inline-block', marginBottom: '1rem' }}>
+        &larr; Back to Sales Portal
+      </Link>
+      <div>
+        <span className="eyebrow">Order</span>
+        <h1 style={{ fontSize: '1.6rem' }}>{order.id}</h1>
+      </div>
 
       <div className="grid grid--2" style={{ gap: '1.5rem', marginBottom: '2rem' }}>
         <div>

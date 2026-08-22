@@ -20,6 +20,9 @@ jspm_packages/
 dist/
 build/
 
+# User-uploaded files
+backend/uploads/
+
 # IDEs and editors
 .claude
 .idea/

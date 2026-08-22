@@ -44,20 +44,20 @@ model User {
 }
 
 model Product {
-  id          String   @id @default(uuid())
-  title       String
-  description String
-  originInfo  String
-  producerName String
-  altitude    Int
-  processType String
-  priceRWF    Int
-  stockCount  Int
-  imageUrl    String
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  orderItems  OrderItem[]
+  id           String   @id @default(uuid())
+  title        String
+  description  String?
+  originInfo   String?
+  producerName String?
+  altitude     Int?
+  processType  String?
+  priceRWF     Int
+  stockCount   Int
+  imageUrl     String?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  orderItems   OrderItem[]
 }
 
 model Order {

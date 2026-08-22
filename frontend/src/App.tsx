@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import RequireAuth from './components/RequireAuth';
@@ -21,8 +21,12 @@ import OrderConfirmation from './pages/OrderConfirmation';
 import Contact from './pages/Contact';
 import SalesDashboard from './pages/sales/SalesDashboard';
 import SalesOrderDetail from './pages/sales/SalesOrderDetail';
+import AdminProducts from './pages/admin/AdminProducts';
+import AdminTeam from './pages/admin/AdminTeam';
 
 const SALES_ROLES = ['SALES_MANAGER', 'SYSTEM_ADMIN'];
+const CATALOG_ROLES = ['SYSTEM_ADMIN', 'MARKETPLACE_ADMIN'];
+const ADMIN_ROLES = ['SYSTEM_ADMIN'];
 
 function App() {
   return (
@@ -49,6 +53,9 @@ function App() {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/sales" element={<RequireRole roles={SALES_ROLES}><SalesDashboard /></RequireRole>} />
                 <Route path="/sales/orders/:id" element={<RequireRole roles={SALES_ROLES}><SalesOrderDetail /></RequireRole>} />
+                <Route path="/admin" element={<Navigate to="/admin/products" replace />} />
+                <Route path="/admin/products" element={<RequireRole roles={CATALOG_ROLES}><AdminProducts /></RequireRole>} />
+                <Route path="/admin/team" element={<RequireRole roles={ADMIN_ROLES}><AdminTeam /></RequireRole>} />
               </Routes>
             </main>
             <div style={{ height: '3rem', backgroundColor: 'var(--color-alabaster)' }} />

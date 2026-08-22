@@ -99,6 +99,9 @@ export default function Header() {
               {(user?.role === 'SALES_MANAGER' || user?.role === 'SYSTEM_ADMIN') && (
                 <Link to="/sales" className="nav-link">Sales Portal</Link>
               )}
+              {(user?.role === 'SYSTEM_ADMIN' || user?.role === 'MARKETPLACE_ADMIN') && (
+                <Link to="/admin/products" className="nav-link">Admin</Link>
+              )}
               <Link to="/profile" aria-label="Your profile" style={{ display: 'inline-flex' }}>
                 <AvatarBadge name={user?.name} avatarUrl={user?.avatarUrl} />
               </Link>
@@ -152,6 +155,9 @@ export default function Header() {
               <>
                 {(user?.role === 'SALES_MANAGER' || user?.role === 'SYSTEM_ADMIN') && (
                   <Link to="/sales" className="nav-link" onClick={() => setOpen(false)}>Sales Portal</Link>
+                )}
+                {(user?.role === 'SYSTEM_ADMIN' || user?.role === 'MARKETPLACE_ADMIN') && (
+                  <Link to="/admin/products" className="nav-link" onClick={() => setOpen(false)}>Admin</Link>
                 )}
                 <Link
                   to="/profile"

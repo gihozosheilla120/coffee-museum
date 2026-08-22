@@ -1,18 +1,33 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { products } from '../data/products';
 import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
+import { useAuth, API_URL, resolveAssetUrl } from '../context/AuthContext';
 import ImagePlaceholder from '../components/ImagePlaceholder';
+import { Product } from '../types';
 
 export default function ProductDetail() {
   const { id } = useParams();
-  const product = products.find(p => p.id === id);
   const { addItem } = useCart();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`${API_URL}/products/${id}`)
+      .then(res => setProduct(res.data))
+      .catch(() => setProduct(null))
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  if (loading) {
+    return <div className="section container"><p className="muted">Loading product...</p></div>;
+  }
 
   if (!product) {
     return (
@@ -23,21 +38,40 @@ export default function ProductDetail() {
     );
   }
 
+  const details = [
+    { label: 'Origin', value: product.originInfo },
+    { label: 'Producer', value: product.producerName },
+    { label: 'Altitude', value: product.altitude ? `${product.altitude}m` : null },
+    { label: 'Process', value: product.processType },
+  ].filter(d => d.value);
+
   return (
     <div className="section">
       <div className="container">
         <Link to="/marketplace" className="muted" style={{ fontSize: '0.85rem' }}>&larr; Back to Marketplace</Link>
         <div className="grid grid--2" style={{ marginTop: '1.5rem', alignItems: 'start' }}>
-          <ImagePlaceholder label="product image to be supplied" height={420} />
+          {product.imageUrl ? (
+            <img
+              src={resolveAssetUrl(product.imageUrl)!}
+              alt={product.title}
+              style={{ width: '100%', height: 420, objectFit: 'cover' }}
+            />
+          ) : (
+            <ImagePlaceholder label="product image to be supplied" height={420} />
+          )}
           <div>
             <h1 style={{ fontSize: '2rem' }}>{product.title}</h1>
-            <p className="muted">{product.description}</p>
-            <div className="grid grid--2" style={{ gap: '0.75rem', margin: '1.5rem 0' }}>
-              <div><span className="tag">Origin</span><p style={{ margin: 0 }}>{product.originInfo}</p></div>
-              <div><span className="tag">Producer</span><p style={{ margin: 0 }}>{product.producerName}</p></div>
-              <div><span className="tag">Altitude</span><p style={{ margin: 0 }}>{product.altitude}m</p></div>
-              <div><span className="tag">Process</span><p style={{ margin: 0 }}>{product.processType}</p></div>
-            </div>
+            {product.description && <p className="muted">{product.description}</p>}
+            {details.length > 0 && (
+              <div className="grid grid--2" style={{ gap: '0.75rem', margin: '1.5rem 0' }}>
+                {details.map(d => (
+                  <div key={d.label}>
+                    <span className="tag">{d.label}</span>
+                    <p style={{ margin: 0 }}>{d.value}</p>
+                  </div>
+                ))}
+              </div>
+            )}
             <div style={{ fontWeight: 800, fontSize: '1.5rem', color: 'var(--color-terracotta)', marginBottom: '1rem' }}>
               {product.priceRWF.toLocaleString()} RWF
             </div>

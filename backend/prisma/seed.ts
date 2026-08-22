@@ -2,68 +2,62 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// Mirrors frontend/src/data/products.ts so orders placed against these ids
-// resolve to real Product rows in the database.
-const PRODUCTS = [
+// The original specialty-bean catalog (p1-p4). Superseded by the drinks menu
+// below, but kept and soft-deactivated rather than deleted — earlier orders
+// still reference these ids as a foreign key.
+const LEGACY_PRODUCT_IDS = ['p1', 'p2', 'p3', 'p4'];
+
+const DRINKS = [
   {
-    id: 'p1',
-    title: 'Nyanza Specialty Bourbon',
-    description: "Exceptional specialty Arabica cultivated on the hills near the Nyanza King's Palace, with notes of red berry and brown sugar.",
-    originInfo: 'Nyanza District, Southern Province',
-    producerName: 'Nyanza Growers Cooperative',
-    altitude: 1750,
-    processType: 'Fully Washed',
-    priceRWF: 12000,
-    stockCount: 42,
-    imageUrl: '/products/p1.jpg',
+    slug: 'cappuccino',
+    title: 'Cappuccino',
+    description: 'Espresso with steamed milk and a deep layer of foam.',
+    priceRWF: 2500,
+    stockCount: 100,
+    imageUrl: '/uploads/products/cappuccino.jpg',
   },
   {
-    id: 'p2',
-    title: 'Huye Hills Natural',
-    description: 'Naturally processed lot with pronounced fruit sweetness — dried jasmine and stone fruit on the finish.',
-    originInfo: 'Huye District, Southern Province',
-    producerName: 'Huye Smallholder Union',
-    altitude: 1820,
-    processType: 'Natural / Dry Process',
-    priceRWF: 13500,
-    stockCount: 27,
-    imageUrl: '/products/p2.jpg',
+    slug: 'latte',
+    title: 'Latte',
+    description: 'Espresso with steamed milk and a light layer of foam.',
+    priceRWF: 2800,
+    stockCount: 100,
+    imageUrl: '/uploads/products/latte.jpg',
   },
   {
-    id: 'p3',
-    title: 'Lake Kivu Washed Reserve',
-    description: 'Bright, clean cup from lakeside micro-lots — citrus acidity balanced with a honeyed body.',
-    originInfo: 'Western Province, Lake Kivu basin',
-    producerName: 'Kivu Belt Cooperative',
-    altitude: 1900,
-    processType: 'Fully Washed',
-    priceRWF: 14000,
-    stockCount: 18,
-    imageUrl: '/products/p3.jpg',
+    slug: 'americano',
+    title: 'Americano',
+    description: 'Espresso lengthened with hot water for a lighter, black-coffee cup.',
+    priceRWF: 2000,
+    stockCount: 100,
+    imageUrl: '/uploads/products/americano.jpg',
   },
   {
-    id: 'p4',
-    title: 'Museum Cupping Set',
-    description: 'A curated 3-origin tasting flight for at-home cupping, paired with our tasting notes card.',
-    originInfo: 'Multi-origin, Southern Province',
-    producerName: 'Coffee Museum i Nyanza',
-    altitude: 1780,
-    processType: 'Mixed',
-    priceRWF: 21000,
-    stockCount: 35,
-    imageUrl: '/products/p4.jpg',
+    slug: 'espresso',
+    title: 'Espresso',
+    description: 'A concentrated shot pulled from freshly roasted museum beans.',
+    priceRWF: 1800,
+    stockCount: 100,
+    imageUrl: '/uploads/products/espresso.jpg',
   },
 ];
 
 async function main() {
-  for (const product of PRODUCTS) {
-    await prisma.product.upsert({
-      where: { id: product.id },
-      update: product,
-      create: product,
-    });
+  await prisma.product.updateMany({
+    where: { id: { in: LEGACY_PRODUCT_IDS } },
+    data: { isActive: false },
+  });
+
+  for (const { slug, ...drink } of DRINKS) {
+    const existing = await prisma.product.findFirst({ where: { title: drink.title } });
+    if (existing) {
+      await prisma.product.update({ where: { id: existing.id }, data: drink });
+    } else {
+      await prisma.product.create({ data: drink });
+    }
   }
-  console.log(`Seeded ${PRODUCTS.length} products.`);
+
+  console.log(`Deactivated ${LEGACY_PRODUCT_IDS.length} legacy products, upserted ${DRINKS.length} drinks.`);
 }
 
 main()

@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.routes';
 import productRoutes from './routes/product.routes';
 import bookingRoutes from './routes/booking.routes';
 import orderRoutes from './routes/order.routes';
+import userRoutes from './routes/user.routes';
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/bookings', bookingRoutes);
 app.use('/api/v1/orders', orderRoutes);
+app.use('/api/v1/users', userRoutes);
 
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', timestamp: new Date() });

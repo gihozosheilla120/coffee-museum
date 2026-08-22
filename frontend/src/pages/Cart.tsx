@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import ImagePlaceholder from '../components/ImagePlaceholder';
+import { resolveAssetUrl } from '../context/AuthContext';
 
 export default function Cart() {
   const { items, updateQuantity, removeItem, subtotalRWF } = useCart();
@@ -25,7 +26,15 @@ export default function Cart() {
               <div className="card__body flex items-center justify-between" style={{ gap: '1rem', flexWrap: 'wrap' }}>
                 <div className="flex items-center gap-2">
                   <div style={{ width: 72, height: 72, borderRadius: 6, overflow: 'hidden' }}>
-                    <ImagePlaceholder label="" height={72} />
+                    {product.imageUrl ? (
+                      <img
+                        src={resolveAssetUrl(product.imageUrl)!}
+                        alt={product.title}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                    ) : (
+                      <ImagePlaceholder label="" height={72} />
+                    )}
                   </div>
                   <div>
                     <h3 style={{ margin: 0, fontSize: '1rem' }}>{product.title}</h3>

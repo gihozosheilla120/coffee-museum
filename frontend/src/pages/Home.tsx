@@ -1,9 +1,13 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { galleries } from '../data/galleries';
-import { products } from '../data/products';
+
 import { journeyStages } from '../data/journeyStages';
-import ImagePlaceholder from '../components/ImagePlaceholder';
+
 import HeroSlideshow from '../components/HeroSlideshow';
+import { API_URL, resolveAssetUrl } from '../context/AuthContext';
+import { Product } from '../types';
 import heroImage from '../assets/hero.jpg';
 import restImage from '../assets/rest.jpg';
 import seatsImage from '../assets/seats.jpg';
@@ -14,6 +18,15 @@ import coffeemachineImage from '../assets/coffeemachine.jpg';
 const HERO_IMAGES = [heroImage, restImage, seatsImage, homeImage, samplesImage, coffeemachineImage];
 
 export default function Home() {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    axios
+      .get(`${API_URL}/products`)
+      .then(res => setProducts(res.data.slice(0, 3)))
+      .catch(() => setProducts([]));
+  }, []);
+
   return (
     <div>
       <section style={{ position: 'relative', overflow: 'hidden', minHeight: 560 }}>
@@ -103,32 +116,37 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section">
+      <section className='section'>
         <div className="container">
           <div className="flex justify-between items-center section-head" style={{ marginBottom: '2rem' }}>
             <h2 style={{ margin: 0 }}>From the museum shop</h2>
             <Link to="/marketplace" className="section-link">All products &rarr;</Link>
           </div>
           <div className="grid grid--3">
-            {products.slice(0, 3).map((product, idx) => (
+            {products.map(product => (
               <div key={product.id}>
                 <Link to={`/marketplace/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <ImagePlaceholder label="product image to be supplied" height={220} />
+                  {product.imageUrl && (
+                    <img
+                      src={resolveAssetUrl(product.imageUrl)!}
+                      alt={product.title}
+                      style={{ width: '100%', height: 200, objectFit: 'cover' }}
+                    />
+                  )}
                 </Link>
-                <div className="flex justify-between items-center" style={{ paddingTop: '1rem' }}>
+                <div className="flex items-center justify-between" style={{ paddingTop: '0.75rem' }}>
                   <Link to={`/marketplace/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    <h3 style={{ margin: 0, fontSize: '1.02rem' }}>{product.title || `Coffee product 0${idx + 1}`}</h3>
+                    <h3 style={{ margin: 0, fontSize: '1rem' }}>{product.title}</h3>
                   </Link>
                   <span style={{ fontWeight: 800, color: 'var(--color-terracotta)', fontSize: '0.95rem' }}>
                     {product.priceRWF.toLocaleString()} RWF
                   </span>
                 </div>
-                <p className="muted" style={{ fontSize: '0.85rem', margin: '0.3rem 0 0' }}>{product.originInfo}</p>
               </div>
             ))}
           </div>
         </div>
-      </section>
+     </section>
     </div>
   );
 }
