@@ -10,8 +10,8 @@ export default function Explore() {
     >
       <div className="grid grid--2">
         {galleries.map((gallery, idx) => (
-          <div key={gallery.id}>
-            <img src={gallery.image} alt={gallery.name} style={{ width: '100%', height: 220, objectFit: 'cover' }} />
+          <div key={gallery.id} className="tile">
+            <img src={gallery.image} alt={gallery.name} className="tile__image" style={{ width: '100%', height: 220, objectFit: 'cover', borderRadius: '8px' }} />
             <div style={{ paddingTop: '1rem' }}>
               <span style={{ color: 'var(--color-green)', fontWeight: 800, fontSize: '0.85rem' }}>
                 {String(idx + 1).padStart(2, '0')}

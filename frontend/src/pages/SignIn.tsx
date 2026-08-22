@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -15,7 +16,6 @@ export default function SignIn() {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState('');
-  const [signupDone, setSignupDone] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,17 +24,17 @@ export default function SignIn() {
     try {
       if (mode === 'signin') {
         await signIn(form.email, form.password);
-        navigate(redirectTo, { replace: true });
       } else {
         await signUp(form.name, form.email, form.password);
-        setSignupDone(true);
-        setMode('signin');
-        setForm(f => ({ ...f, password: '' }));
       }
-      setStatus('idle');
-    } catch {
+      navigate(redirectTo, { replace: true });
+    } catch (err) {
       setStatus('error');
-      setError("Couldn't reach the account service right now. Please try again shortly.");
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("Couldn't reach the account service right now. Please try again shortly.");
+      }
     }
   };
 
@@ -44,15 +44,9 @@ export default function SignIn() {
       <h1>{mode === 'signin' ? 'Welcome back' : 'Create your account'}</h1>
       <p className="muted">
         {mode === 'signin'
-          ? "Sign in to shop the Coffee Museum marketplace."
+          ? 'Sign in to shop the Coffee Museum marketplace.'
           : 'Create an account to start shopping direct-trade coffee.'}
       </p>
-
-      {signupDone && mode === 'signin' && (
-        <p style={{ color: 'var(--color-green)', fontWeight: 600 }}>
-          Account created — sign in below to continue.
-        </p>
-      )}
 
       <form onSubmit={handleSubmit} className="card" style={{ marginTop: '1.5rem' }}>
         <div className="card__body flex flex-col gap-2">

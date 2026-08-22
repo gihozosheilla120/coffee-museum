@@ -25,7 +25,7 @@ export default function OurStory() {
       </section>
 
       <div className="container">
-        <img src={homeImage} alt="Coffee Museum i Nyanza entrance" style={{ width: '100%', height: 420, objectFit: 'cover' }} />
+        <img src={homeImage} alt="Coffee Museum i Nyanza entrance" style={{ width: '100%', height: 420, objectFit: 'cover', borderRadius:'25px' }} />
       </div>
 
       <section className="section">

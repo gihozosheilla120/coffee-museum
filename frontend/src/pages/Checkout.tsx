@@ -1,11 +1,16 @@
 import { useState } from 'react';
+import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth, API_URL } from '../context/AuthContext';
 
 export default function Checkout() {
   const { items, subtotalRWF, clear } = useCart();
+  const { user } = useAuth();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: '', email: '', address: '' });
+  const [address, setAddress] = useState('');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
+  const [error, setError] = useState('');
 
   if (items.length === 0) {
     return (
@@ -16,12 +21,25 @@ export default function Checkout() {
     );
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // No payment gateway is configured yet — this simulates order placement client-side.
-    const orderRef = `CM-${Date.now().toString().slice(-8)}`;
-    clear();
-    navigate('/order-confirmation', { state: { orderRef } });
+    setStatus('submitting');
+    setError('');
+    try {
+      const res = await axios.post(`${API_URL}/orders`, {
+        shippingAddress: address,
+        items: items.map(({ product, quantity }) => ({ productId: product.id, quantity })),
+      });
+      clear();
+      navigate('/order-confirmation', { state: { orderRef: res.data.order.id } });
+    } catch (err) {
+      setStatus('error');
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("Couldn't place your order right now. Please try again shortly.");
+      }
+    }
   };
 
   return (
@@ -31,25 +49,26 @@ export default function Checkout() {
         <div className="grid grid--2" style={{ alignItems: 'start' }}>
           <form onSubmit={handleSubmit} className="card">
             <div className="card__body flex flex-col gap-2">
-              <label className="flex flex-col gap-1">
-                <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Full Name</span>
-                <input required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
-                  style={{ padding: '0.6rem', borderRadius: 6, border: '1px solid var(--color-platinum)' }} />
-              </label>
-              <label className="flex flex-col gap-1">
-                <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Email</span>
-                <input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
-                  style={{ padding: '0.6rem', borderRadius: 6, border: '1px solid var(--color-platinum)' }} />
-              </label>
+              <p className="muted" style={{ fontSize: '0.88rem', margin: 0 }}>
+                Placing this order as <strong>{user?.name}</strong> ({user?.email}).
+              </p>
               <label className="flex flex-col gap-1">
                 <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Shipping Address</span>
-                <textarea required value={form.address} onChange={e => setForm({ ...form, address: e.target.value })}
-                  rows={3} style={{ padding: '0.6rem', borderRadius: 6, border: '1px solid var(--color-platinum)', fontFamily: 'inherit' }} />
+                <textarea
+                  required
+                  value={address}
+                  onChange={e => setAddress(e.target.value)}
+                  rows={3}
+                  style={{ padding: '0.6rem', borderRadius: 6, border: '1px solid var(--color-platinum)', fontFamily: 'inherit' }}
+                />
               </label>
-              <button className="btn" type="submit" style={{ marginTop: '0.5rem' }}>Place Order</button>
+              <button className="btn" type="submit" disabled={status === 'submitting'} style={{ marginTop: '0.5rem' }}>
+                {status === 'submitting' ? 'Placing Order...' : 'Place Order'}
+              </button>
               <p className="muted" style={{ fontSize: '0.78rem' }}>
-                No payment gateway is connected yet &mdash; this places a demo order for now.
+                No payment gateway is connected yet &mdash; the order is recorded as pending payment for now.
               </p>
+              {status === 'error' && <p style={{ color: 'var(--color-crimson)', fontWeight: 600 }}>{error}</p>}
             </div>
           </form>
 

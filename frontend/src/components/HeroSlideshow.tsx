@@ -35,22 +35,27 @@ export default function HeroSlideshow({ images, intervalMs = 4500, overlay = tru
           }}
         />
       ))}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(rgba(0,39,61,0.72), rgba(0,39,61,0.6))',
-        }}
-      />
+      {overlay && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(rgba(0,39,61,0.72), rgba(0,39,61,0.6))',
+          }}
+        />
+      )}
       {images.length > 1 && (
         <div
           style={{
             position: 'absolute',
-            bottom: '1.5rem',
+            bottom: '1rem',
             left: '50%',
             transform: 'translateX(-50%)',
             display: 'flex',
             gap: '0.5rem',
+            padding: overlay ? 0 : '0.35rem 0.6rem',
+            borderRadius: 999,
+            background: overlay ? 'transparent' : 'rgba(0,39,61,0.45)',
           }}
         >
           {images.map((src, i) => (

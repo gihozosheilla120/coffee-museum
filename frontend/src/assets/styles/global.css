@@ -273,6 +273,22 @@ a:hover .chevron-pattern--light {
   opacity: 0.82;
 }
 
+.tile {
+  transition: transform 0.35s ease;
+}
+
+.tile:hover {
+  transform: translateY(-8px);
+}
+
+.tile__image {
+  transition: box-shadow 0.35s ease;
+}
+
+.tile:hover .tile__image {
+  box-shadow: var(--shadow-card-hover);
+}
+
 .divider-strip {
   height: 10px;
   width: 100%;
@@ -400,56 +416,55 @@ a:hover .chevron-pattern--light {
   .divider-col:first-child { border-top: none; padding-top: 0; }
 }
 
-/* Stage tab strip (Coffee Journey) */
-.stage-tabs {
-  display: flex;
-  overflow-x: auto;
-  border-bottom: 1px solid var(--color-platinum);
-  scrollbar-width: thin;
+/* Flip cards (Coffee Journey) */
+.flip-card {
+  perspective: 1200px;
+  width: 100%;
 }
 
-.stage-tab {
-  flex: 0 0 auto;
+.flip-card__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card__inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.flip-card__face--front {
+  background-size: cover;
+  background-position: center;
+}
+
+.flip-card__face--back {
+  background: var(--color-navy);
+  color: var(--color-platinum);
+  transform: rotateY(180deg);
+  padding: 1.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  padding: 1rem 1.4rem 0.9rem;
-  border: none;
-  border-bottom: 3px solid transparent;
-  background: transparent;
-  cursor: pointer;
-  text-align: left;
-  font-family: var(--font-sans);
-  white-space: nowrap;
-  transition: border-color 0.15s ease;
+  justify-content: center;
 }
 
-.stage-tab:hover:not(.stage-tab--active) {
-  border-bottom-color: var(--color-platinum);
+.flip-card__face--back h3 {
+  color: white;
+  margin: 0 0 0.6rem;
 }
 
-.stage-tab:hover .stage-tab__title {
-  color: var(--color-navy);
-}
-
-.stage-tab__num {
-  color: var(--color-green);
-  font-weight: 800;
-  font-size: 0.78rem;
-}
-
-.stage-tab__title {
-  color: #5a6672;
-  font-weight: 600;
-  font-size: 0.9rem;
-  max-width: 120px;
-  white-space: normal;
-}
-
-.stage-tab--active {
-  border-bottom-color: var(--color-terracotta);
-}
-
-.stage-tab--active .stage-tab__title {
-  color: var(--color-navy);
+.flip-card__face--back p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
 }

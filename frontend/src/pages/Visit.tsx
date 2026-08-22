@@ -1,106 +1,48 @@
 import { useState } from 'react';
-import axios from 'axios';
+import { Link } from 'react-router-dom';
 import Section from '../components/Section';
 import { attractions } from '../data/attractions';
 import { visitFaqs } from '../data/faqs';
 import samplesImage from '../assets/samples.jpg';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
-
-type BookingState = 'idle' | 'submitting' | 'success' | 'error';
+import homeImage from '../assets/visit.jpg'
 
 export default function Visit() {
-  const [form, setForm] = useState({
-    guestName: '',
-    guestEmail: '',
-    sessionType: 'Guided Tour',
-    bookingDate: '',
-    partySize: 1,
-  });
-  const [status, setStatus] = useState<BookingState>('idle');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('submitting');
-    try {
-      await axios.post(`${API_URL}/bookings`, form);
-      setStatus('success');
-    } catch {
-      setStatus('error');
-    }
-  };
 
   return (
     <div>
       <section className="section--tight">
         <div className="container">
-          <span className="eyebrow">Visit</span>
-          <h1>Plan Your Visit to Nyanza</h1>
-          <p className="section-intro">
-            Combine your visit with nearby historic hubs like the Nyanza King's Palace and the Huye Ethnographic
-            Museum for a full day of Rwandan heritage.
-          </p>
+          <div className="grid grid--2" style={{ gap: '3rem', alignItems: 'start' }}>
+            <div>
+              <span className="eyebrow">Visit</span>
+              <h1>Plan Your Visit to Coffee Museum</h1>
+              <p className="section-intro">
+                Combine your visit with nearby historic hubs like the Nyanza King's Palace and the Huye Ethnographic
+                Museum for a full day of Rwandan heritage.
+              </p>
+
+              <div className="flat-tile" style={{ marginTop: '2.5rem' }}>
+                <h3>Opening Hours</h3>
+                <p className="muted">Open Daily: 8:00 AM &ndash; 6:00 PM<br />Last entry: 5:00 PM</p>
+              </div>
+              <div className="flat-tile" style={{ marginTop: '1.5rem' }}>
+                <h3>Location</h3>
+                <p className="muted">Nyanza, Southern Province, Rwanda &mdash; a short drive from the Nyanza King's Palace.</p>
+              </div>
+            </div>
+            <img
+              src={homeImage}
+              alt="Coffee Museum i Nyanza entrance"
+              style={{ borderRadius: '30px', width: '100%', height: '40%', minHeight: 480, objectFit: 'cover' }}
+            />
+          </div>
         </div>
       </section>
 
-      <Section eyebrow="Hours & Location" title="Opening Hours & Directions" tight>
-        <div className="divider-row grid grid--2">
-          <div className="divider-col">
-            <h3>Opening Hours</h3>
-            <p className="muted">Open Daily: 8:00 AM &ndash; 6:00 PM<br />Last entry: 5:00 PM</p>
-          </div>
-          <div className="divider-col">
-            <h3>Location</h3>
-            <p className="muted">Nyanza, Southern Province, Rwanda &mdash; a short drive from the Nyanza King's Palace.</p>
-          </div>
-        </div>
-      </Section>
-
       <div id="tours" />
-      <Section eyebrow="Guided Tours" title="Book a Guided Tour" alt intro="Group, school, and private tours are available daily. Submit your details and our team will confirm availability.">
-        <form onSubmit={handleSubmit} className="card" style={{ maxWidth: 560 }}>
-          <div className="card__body flex flex-col gap-2">
-            <label className="flex flex-col gap-1">
-              <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Full Name</span>
-              <input required value={form.guestName} onChange={e => setForm({ ...form, guestName: e.target.value })}
-                style={{ padding: '0.6rem', borderRadius: 6, border: '1px solid var(--color-platinum)' }} />
-            </label>
-            <label className="flex flex-col gap-1">
-              <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Email</span>
-              <input required type="email" value={form.guestEmail} onChange={e => setForm({ ...form, guestEmail: e.target.value })}
-                style={{ padding: '0.6rem', borderRadius: 6, border: '1px solid var(--color-platinum)' }} />
-            </label>
-            <label className="flex flex-col gap-1">
-              <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Session Type</span>
-              <select value={form.sessionType} onChange={e => setForm({ ...form, sessionType: e.target.value })}
-                style={{ padding: '0.6rem', borderRadius: 6, border: '1px solid var(--color-platinum)' }}>
-                <option>Guided Tour</option>
-                <option>Coffee Tasting Experience</option>
-                <option>School Group Visit</option>
-                <option>Private Group Tour</option>
-              </select>
-            </label>
-            <div className="grid grid--2" style={{ gap: '1rem' }}>
-              <label className="flex flex-col gap-1">
-                <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Date</span>
-                <input required type="date" value={form.bookingDate} onChange={e => setForm({ ...form, bookingDate: e.target.value })}
-                  style={{ padding: '0.6rem', borderRadius: 6, border: '1px solid var(--color-platinum)' }} />
-              </label>
-              <label className="flex flex-col gap-1">
-                <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Party Size</span>
-                <input required type="number" min={1} value={form.partySize}
-                  onChange={e => setForm({ ...form, partySize: Number(e.target.value) })}
-                  style={{ padding: '0.6rem', borderRadius: 6, border: '1px solid var(--color-platinum)' }} />
-              </label>
-            </div>
-            <button className="btn" type="submit" disabled={status === 'submitting'} style={{ marginTop: '0.5rem' }}>
-              {status === 'submitting' ? 'Submitting...' : 'Request Booking'}
-            </button>
-            {status === 'success' && <p style={{ color: 'var(--color-green)', fontWeight: 600 }}>Booking request received &mdash; we'll confirm by email.</p>}
-            {status === 'error' && <p style={{ color: 'var(--color-crimson)', fontWeight: 600 }}>Couldn't reach the booking service right now. Please try again shortly or contact us directly.</p>}
-          </div>
-        </form>
+      <Section eyebrow="Guided Tours" title="Book a Tour" alt intro="Group, school, and private tours are available daily. Reach out and our team will confirm availability.">
+        <Link to="/contact" className="btn">Book a Tour</Link>
       </Section>
 
       <div id="tasting" />
