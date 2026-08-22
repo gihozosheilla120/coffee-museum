@@ -12,6 +12,7 @@ enum Role {
   CUSTOMER
   CONTENT_ADMIN
   MARKETPLACE_ADMIN
+  SALES_MANAGER
   SYSTEM_ADMIN
 }
 
@@ -33,6 +34,8 @@ model User {
   email     String   @unique
   password  String
   name      String
+  avatarUrl String?
+  language  String   @default("en")
   role      Role     @default(CUSTOMER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
